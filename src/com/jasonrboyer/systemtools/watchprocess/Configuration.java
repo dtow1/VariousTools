@@ -52,7 +52,7 @@ public class Configuration {
 		try {
 			String currentLine;
 			while((currentLine = fileReader.readLine()) != null) {
-				parseString(currentLine);
+				getParameters(currentLine);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -61,17 +61,27 @@ public class Configuration {
 
 	}
 	
-	public void parseString(String toParse) {
+	private void getParameters(String toParse) {
 		int  colLoc = toParse.indexOf(':');
-		switch(toParse.substring(1,colLoc)) {
-			case ("process"):
-				String[] process = toParse.substring(colLoc+1,toParse.length()-1).split(",");
-				for(String prcs: process) {
-					processes.add(prcs);
+		String[] parsed = parseLine(toParse);
+		switch(parsed[0]) {
+			case ("-process"):
+				for(int i=1;i<parsed.length;i++) {
+					processes.add(parsed[i]);
 				}
 				break;	
 		}
 		
+	}
+	
+	private String[] parseLine(String toParse) {
+		String[] results = null;
+		
+		if(toParse!=null) {
+			results=toParse.split(";|:|,");
+		}
+		
+		return results;
 	}
 	
 	public String getName() {

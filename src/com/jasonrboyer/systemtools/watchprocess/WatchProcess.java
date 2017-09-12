@@ -14,7 +14,7 @@ public class WatchProcess {
 		processes = myConfig.getProcesses();
 		
 		for(String prcs: processes) {
-			System.out.println("Main prcss");
+			System.out.println("Main process");
 			System.out.println(prcs);
 		}
 		
