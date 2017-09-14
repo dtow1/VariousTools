@@ -12,6 +12,8 @@ public class Configuration {
 	private BufferedReader fileReader;
 	private String fileName;
 	private ArrayList<String> processes = new ArrayList<String>();
+	private int checktime=0;
+	private int alerttime=0;
 	
 	public Configuration() {
 		this("config.cfg");
@@ -52,7 +54,10 @@ public class Configuration {
 		try {
 			String currentLine;
 			while((currentLine = fileReader.readLine()) != null) {
-				getParameters(currentLine);
+				if(currentLine.length() > 0 && currentLine.charAt(0)=='-') {
+					getParameters(currentLine);
+				}
+
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -62,7 +67,7 @@ public class Configuration {
 	}
 	
 	private void getParameters(String toParse) {
-		int  colLoc = toParse.indexOf(':');
+		int colLoc = toParse.indexOf(':');
 		String[] parsed = parseLine(toParse);
 		switch(parsed[0]) {
 			case ("-process"):
@@ -70,15 +75,49 @@ public class Configuration {
 					processes.add(parsed[i]);
 				}
 				break;	
+			case ("-checkhours"):
+				checktime+=(getNumber(parsed[1])*3600);
+				break;
+			case ("-checkminutes"):
+				checktime+=(getNumber(parsed[1])*60);
+				break;
+			case ("-checkseconds"):
+				checktime+=(getNumber(parsed[1]));
+				break;
+			case ("-alerthours"):
+				alerttime+=(getNumber(parsed[1])*3600);
+				break;
+			case ("-alertminutes"):
+				alerttime+=(getNumber(parsed[1])*60);
+				break;
+			case ("-alertseconds"):
+				alerttime+=(getNumber(parsed[1]));
+				break;
 		}
 		
+	}
+	
+	private int getNumber(String number) {
+		int value;
+		if(number==null) {
+			value=0;
+		}
+		try {
+			value = Integer.parseInt(number);
+			if(value<0) {
+				value=0;
+			}
+		} catch (NumberFormatException e) {
+		    value=0;
+		}
+		return value;
 	}
 	
 	private String[] parseLine(String toParse) {
 		String[] results = null;
 		
 		if(toParse!=null) {
-			results=toParse.split(";|:|,");
+			results=(toParse.split(";|:|,"));
 		}
 		
 		return results;
@@ -86,6 +125,14 @@ public class Configuration {
 	
 	public String getName() {
 		return configFile.getName();
+	}
+	
+	public int getPollTime() {
+		return checktime;
+	}
+	
+	public int getAlertTime() {
+		return alerttime;
 	}
 	
 	public ArrayList<String> getProcesses() {

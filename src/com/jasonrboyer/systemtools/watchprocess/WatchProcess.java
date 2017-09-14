@@ -18,6 +18,8 @@ public class WatchProcess {
 			System.out.println(prcs);
 		}
 		
+		System.out.println("Polltime" + myConfig.getPollTime());
+		System.out.println("Polltime" + myConfig.getAlertTime());		
 		
 
 	}
