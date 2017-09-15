@@ -14,6 +14,7 @@ public class Configuration {
 	private ArrayList<String> processes = new ArrayList<String>();
 	private int checktime=0;
 	private int alerttime=0;
+	private boolean checkStatus=false;
 	
 	public Configuration() {
 		this("config.cfg");
@@ -92,6 +93,11 @@ public class Configuration {
 			case ("-alertseconds"):
 				alerttime+=(getNumber(parsed[1]));
 				break;
+			case("-checkstatus"):
+				if(parsed[1].equals("true")) {
+					checkStatus=true;
+				}
+				break;
 		}
 		
 	}
@@ -132,6 +138,10 @@ public class Configuration {
 	
 	public int getAlertTime() {
 		return alerttime;
+	}
+	
+	public boolean getCheckStatus() {
+		return checkStatus;
 	}
 	
 	public ArrayList<String> getProcesses() {
