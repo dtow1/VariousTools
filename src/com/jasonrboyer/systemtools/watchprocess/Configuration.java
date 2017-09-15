@@ -57,7 +57,6 @@ public class Configuration {
 				if(currentLine.length() > 0 && currentLine.charAt(0)=='-') {
 					getParameters(currentLine);
 				}
-
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
